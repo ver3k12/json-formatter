@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter & Validator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #58a6ff;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+            flex: 1;
+        }
+        .pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #8b949e;
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            background-color: #161b22;
+            color: #f0f6fc;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+        .buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            background-color: #238636;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2ea043;
+        }
+        button.secondary {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+        }
+        button.secondary:hover {
+            background-color: #30363d;
+        }
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 6px;
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+        .success {
+            background-color: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+            border: 1px solid #238636;
+        }
+        .error {
+            background-color: rgba(248, 81, 73, 0.2);
+            color: #f85149;
+            border: 1px solid #f85149;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>JSON Formatter & Validator</h1>
+
+    <div class="container">
+        <div class="pane">
+            <label for="inputJson">Wklej swój JSON:</label>
+            <textarea id="inputJson" placeholder='{"klucz": "wartość"}'></textarea>
+        </div>
+        <div class="pane">
+            <label for="outputJson">Wynik:</label>
+            <textarea id="outputJson" readonly placeholder="Sformatowany JSON pojawi się tutaj..."></textarea>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="formatJson()">Formatuj i Sprawdź</button>
+        <button class="secondary" onclick="clearFields()">Wyczyść</button>
+        <button class="secondary" onclick="copyOutput()">Kopiuj wynik</button>
+    </div>
+
+    <div id="status" style="display: none;"></div>
+
+    <script>
+        function formatJson() {
+            const input = document.getElementById('inputJson').value;
+            const output = document.getElementById('outputJson');
+            const status = document.getElementById('status');
+
+            if (!input.trim()) {
+                status.style.display = 'block';
+                status.className = 'error';
+                status.textContent = 'Pole tekstowe jest puste!';
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(input);
+                output.value = JSON.stringify(parsed, null, 2);
+                
+                status.style.display = 'block';
+                status.className = 'success';
+                status.textContent = 'Sukces! JSON jest poprawny.';
+            } catch (err) {
+                output.value = '';
+                status.style.display = 'block';
+                status.className = 'error';
+                status.textContent = 'Błąd składni JSON: ' + err.message;
+            }
+        }
+
+        function clearFields() {
+            document.getElementById('inputJson').value = '';
+            document.getElementById('outputJson').value = '';
+            document.getElementById('status').style.display = 'none';
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('outputJson');
+            if (!output.value) return;
+            navigator.clipboard.writeText(output.value);
+            alert('Skopiowano wynik do schowka!');
+        }
+    </script>
+
+</body>
+</html>
