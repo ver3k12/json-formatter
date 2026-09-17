@@ -18,3 +18,10 @@ Lekkie, szybkie i działające w 100% po stronie przeglądarki narzędzie do for
 * HTML5
 * CSS3 (Styl inspirowany ciemnym motywem GitHub)
 * JavaScript (ES6+)
+
+---
+
+🌐 **Odwiedź moje projekty:** 
+- [pvpblaze.net](https://pvpblaze.net/)
+- [cmclient/cmpack](https://cm-pack.pl/pl)
+- [spacehost](https://spacehost.ovh/)
